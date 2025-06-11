@@ -26,6 +26,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
+import Loader from '../messages/Loader';
 
 const Navbar = () => {
   const { isAuthed, username } = useAuth();
@@ -43,10 +44,9 @@ const Navbar = () => {
   ];
 
   const handleLogout = async () => {
-    await logout();
-    navigate('/');
     setAnchorEl(null);
     setDrawerOpen(false);
+    await logout();
   };
 
   const handleMenuOpen = (event) => {
@@ -207,7 +207,7 @@ const Navbar = () => {
         }}
       >
         <Divider sx={{ bgcolor: 'rgba(255,255,255,0.2)', my: 1 }} />
-        <List sx={{ mt: 6 }}>
+        <List>
           {!isAuthed() ? (
             guestLinks.map((link) => (
               <ListItem

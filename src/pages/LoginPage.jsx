@@ -48,7 +48,6 @@ const LoginPage = () => {
           withCredentials: true
         }
       );
-      console.log(response)
       const accessToken = response?.data?.accessToken;
       const id = response?.data?.id;
       const role = response?.data?.role;
