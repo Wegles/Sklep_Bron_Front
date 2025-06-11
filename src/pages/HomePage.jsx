@@ -1,6 +1,5 @@
 import "./index.css";
 import { useState } from "react";
-import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import ProductCard from "../components/ProductCard";
 import Cart from "../components/Cart";

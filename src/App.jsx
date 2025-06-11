@@ -9,17 +9,17 @@ import HomePage from './pages/HomePage';
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Layout />} >
+     <Route element={<PersistLogin />}>
+        <Route path="/" element={<Layout />} >
           <Route path="/" element={<HomePage />} />
           <Route path="register" element={<RegisterPage />} />
-          <Route element={<PersistLogin />}>
             <Route path="login" element={<LoginPage />} />
             <Route path="*" element={<div>404 Not Found</div>} />
             <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
               <Route path="admin" element={<div>Admin Page</div>} />
-            </Route>
           </Route>
-        </Route>
+      </Route>
+      </Route>
     </Routes>
   );
 }
