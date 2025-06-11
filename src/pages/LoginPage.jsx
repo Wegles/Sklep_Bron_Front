@@ -6,12 +6,12 @@ import axios from '../api/axios';
 import { Box, Paper, Typography, Button, TextField, Checkbox, FormControlLabel, Divider, useTheme } from '@mui/material';
 
 const LoginPage = () => {
-  const { setAuth, persist, setPersist, auth, setAvatar, setUsername } = useAuth();
+  const { setAuth, persist, setPersist, auth, setUsername } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || '/home';
+  const from = location.state?.from?.pathname || '/';
 
   const userRef = useRef();
   const errRef = useRef();
@@ -24,7 +24,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (auth?.accessToken) {
-      navigate('/home', { replace: true });
+      navigate('/', { replace: true });
     }
   }, [auth?.accessToken, navigate]);
 
@@ -41,20 +41,18 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(
-        '/login',
+        '/auth/login',
         JSON.stringify({ username: user, password }),
         {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true
         }
       );
-
+      console.log(response)
       const accessToken = response?.data?.accessToken;
       const id = response?.data?.id;
-      const avatarFilename = response?.data?.avatarFilename;
       const role = response?.data?.role;
-      setAuth({ user, id, avatarFilename, role, accessToken });
-      setAvatar(avatarFilename);
+      setAuth({ user, id, role, accessToken });
       setUsername(user);
       setUser('');
       setPassword('');

@@ -28,7 +28,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 const Navbar = () => {
-  const { isAuthed, username, avatar } = useAuth();
+  const { isAuthed, username } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
 
@@ -127,7 +127,7 @@ const Navbar = () => {
                     }}
                   >
                     <Avatar
-                      src={avatar ? `${BACKEND_URL}/static/${avatar}` : undefined}
+                      src={null}
                       alt={username}
                       sx={{
                         width: 36,
@@ -244,7 +244,7 @@ const Navbar = () => {
                 onClick={handleProfileClick}
               >
                 <Avatar
-                  src={avatar ? `${BACKEND_URL}/static/${avatar}` : undefined}
+                  src={null}
                   alt={username}
                   sx={{
                     width: 36,

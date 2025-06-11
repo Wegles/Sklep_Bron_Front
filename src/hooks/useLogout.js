@@ -10,7 +10,6 @@ const useLogout = () => {
       await axios('/logout', {
         withCredentials: true
       });
-      localStorage.setItem('avatar_filename', null);
       localStorage.setItem('username', null);
     } catch (err) {
       console.error(err);

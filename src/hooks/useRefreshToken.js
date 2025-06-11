@@ -2,7 +2,7 @@ import axios from "../api/axios";
 import useAuth from "./useAuth";
 
 const useRefreshToken = () => {
-  const { setAuth, setAvatar, setUsername } = useAuth();
+  const { setAuth, setUsername } = useAuth();
 
   const refresh = async () => {
     const response = await axios.get('/refresh', {
@@ -17,7 +17,6 @@ const useRefreshToken = () => {
         username: response.data.username,
        }
     })
-    setAvatar(response.data.avatarFilename);
     setUsername(response.data.username);
     return response.data.accessToken;
   }
