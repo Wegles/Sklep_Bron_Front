@@ -26,10 +26,11 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import Loader from '../messages/Loader';
 
 const Navbar = () => {
-  const { isAuthed, username } = useAuth();
+  const { isAuthed, username, auth } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
 
@@ -42,6 +43,9 @@ const Navbar = () => {
     { to: '/login', label: 'Zaloguj', icon: <LoginIcon /> },
     { to: '/register', label: 'Zarejestruj', icon: <PersonAddIcon /> }
   ];
+
+  // Sprawdź czy użytkownik jest adminem
+  const isAdmin = auth?.role === 'ADMIN';
 
   const handleLogout = async () => {
     setAnchorEl(null);
@@ -62,6 +66,12 @@ const Navbar = () => {
       setDrawerOpen(false);
       setAnchorEl(null);
     }
+  };
+
+  const handleAdminPanel = () => {
+    navigate('/admin');
+    setAnchorEl(null);
+    setDrawerOpen(false);
   };
 
   return (
@@ -110,6 +120,18 @@ const Navbar = () => {
                 ))
               ) : (
                 <>
+                  {isAdmin && (
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      size="small"
+                      startIcon={<AdminPanelSettingsIcon />}
+                      sx={{ borderRadius: 2, fontWeight: 600 }}
+                      onClick={handleAdminPanel}
+                    >
+                      Panel admina
+                    </Button>
+                  )}
                   <Box
                     onClick={handleProfileClick}
                     sx={{
@@ -207,7 +229,7 @@ const Navbar = () => {
         }}
       >
         <Divider sx={{ bgcolor: 'rgba(255,255,255,0.2)', my: 1 }} />
-        <List>
+        <List sx={{ mt: 4 }}>
           {!isAuthed() ? (
             guestLinks.map((link) => (
               <ListItem
@@ -270,6 +292,23 @@ const Navbar = () => {
                 <ListItemText primary="Strona główna" button/>
               </ListItem>
               <Divider sx={{ bgcolor: 'rgba(255,255,255,0.2)', my: 1 }} />
+                {isAdmin && (
+                  <ListItem
+                    button
+                    onClick={() => {
+                      handleDrawerToggle();
+                      handleAdminPanel();
+                    }}
+                    sx={{
+                      color: '#fff',
+                      borderRadius: 1,
+                      mb: 1,
+                      '&:hover': { bgcolor: theme.palette.secondary.main, color: '#fff' }
+                    }}
+                  >
+                    <ListItemText primary="Panel admina" />
+                  </ListItem>
+                  )}
                 <ListItem
                   button
                   sx={{
