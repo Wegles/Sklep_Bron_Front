@@ -1,32 +1,99 @@
-function ProductCard({ image, model, price, availability, caliber, ignition, isNew, description, onAdd }) {
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  Box,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+} from "@mui/material";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import SportsMmaIcon from "@mui/icons-material/SportsMma";
+import FlashOnIcon from "@mui/icons-material/FlashOn";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
+import NewReleasesIcon from "@mui/icons-material/NewReleases";
+
+function ProductCard({
+  image,
+  model,
+  price,
+  availability,
+  caliber,
+  ignition,
+  isNew,
+  description,
+  onAdd,
+}) {
   return (
-    <div className="border rounded shadow p-4 flex flex-col">
-      <div className="h-40 flex justify-center items-center mb-2 overflow-hidden bg-gray-50 rounded">
-        <img
-          src={image}
-          alt={model}
-          className="h-full object-contain"
-        />
-      </div>
-      <h3 className="text-lg font-semibold">{model}</h3>
-      <p className="text-sm text-gray-600 mb-2">{description}</p>
-      <ul className="text-sm text-gray-700 mb-2 space-y-1">
-        <li>💰 Cena: <strong className="text-green-700">{price} zł</strong></li>
-        <li>🔫 Kaliber: {caliber}</li>
-        <li>⚡ Zapłon: {ignition}</li>
-        <li>📦 Dostępność: {availability ? "Dostępna" : "Niedostępna"}</li>
-        <li>🆕 Stan: {isNew ? "Nowa" : "Używana"}</li>
-      </ul>
-      <button
-        onClick={onAdd}
-        disabled={!availability}
-        className={`mt-auto py-2 rounded text-white ${
-          availability ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"
-        }`}
-      >
-        {availability ? "Dodaj do koszyka" : "Brak w magazynie"}
-      </button>
-    </div>
+    <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }} elevation={3}>
+      <CardMedia
+        component="img"
+        image={image}
+        alt={model}
+        sx={{
+          height: 180,
+          objectFit: "contain",
+          bgcolor: "#f5f5f5",
+        }}
+      />
+      <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+        <Typography variant="h6" fontWeight={700} gutterBottom>
+          {model}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+          {description}
+        </Typography>
+        <List dense disablePadding>
+          <ListItem disableGutters>
+            <ListItemIcon>
+              <AttachMoneyIcon color="success" />
+            </ListItemIcon>
+            <ListItemText primary={`Cena: ${price} zł`} />
+          </ListItem>
+          <ListItem disableGutters>
+            <ListItemIcon>
+              <SportsMmaIcon />
+            </ListItemIcon>
+            <ListItemText primary={`Kaliber: ${caliber}`} />
+          </ListItem>
+          <ListItem disableGutters>
+            <ListItemIcon>
+              <FlashOnIcon />
+            </ListItemIcon>
+            <ListItemText primary={`Zapłon: ${ignition}`} />
+          </ListItem>
+          <ListItem disableGutters>
+            <ListItemIcon>
+              <Inventory2Icon color={availability ? "primary" : "disabled"} />
+            </ListItemIcon>
+            <ListItemText
+              primary={`Dostępność: ${availability ? "Dostępna" : "Niedostępna"}`}
+            />
+          </ListItem>
+          <ListItem disableGutters>
+            <ListItemIcon>
+              <NewReleasesIcon color={isNew ? "info" : "disabled"} />
+            </ListItemIcon>
+            <ListItemText primary={`Stan: ${isNew ? "Nowa" : "Używana"}`} />
+          </ListItem>
+        </List>
+        <Box sx={{ flexGrow: 1 }} />
+        <Divider sx={{ my: 2 }} />
+        <Button
+          onClick={onAdd}
+          disabled={!availability}
+          variant="contained"
+          color={availability ? "primary" : "inherit"}
+          fullWidth
+        >
+          {availability ? "Dodaj do koszyka" : "Brak w magazynie"}
+        </Button>
+      </CardContent>
+    </Card>
   );
 }
 

@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import RegisterForm from "../components/RegisterForm";
 import Cart from "../components/Cart";
 import SelectionBar from "../components/home/SelectionBar";
-import ShortGunsList from "../components/home/ShortGunsList";
-import LongGunsList from "../components/home/LongGunsList";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import ProductCard from "../components/ProductCard";
+import { Box, Typography, TextField, InputAdornment, Paper } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 function HomePage() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -13,24 +14,21 @@ function HomePage() {
   const [cartItems, setCartItems] = useState([]);
   const [showCart, setShowCart] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [filter, setFilter] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axiosPrivate.get("/guns");
-        if (activeCategory === "all") {
-          setProducts(response.data);
-        } else {
-          setProducts(response.data.filter(gun => gun.category === activeCategory));
-        }
+        setProducts(response.data);
       } catch (err) {
         setProducts([]);
         console.error("Błąd pobierania broni:", err);
       }
     };
     fetchProducts();
-  }, [activeCategory, axiosPrivate]);
+  }, [axiosPrivate]);
 
   const addToCart = (product) => {
     setCartItems((items) => {
@@ -54,23 +52,101 @@ function HomePage() {
     );
   };
 
+  // Filtrowanie produktów po kategorii i wyszukiwaniu
+  let displayedProducts = products;
+  if (activeCategory !== "all") {
+    displayedProducts = displayedProducts.filter(
+      (gun) => gun.category === activeCategory
+    );
+  }
+  if (filter.trim() !== "") {
+    displayedProducts = displayedProducts.filter((gun) =>
+      gun.model?.toLowerCase().includes(filter.trim().toLowerCase())
+    );
+  }
+
   return (
-    <div style={{ padding: 16 }}>
-      <SelectionBar activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
-      <main style={{ marginTop: 32 }}>
-        {activeCategory === "pistol" && (
-          <ShortGunsList products={products} onAdd={addToCart} />
-        )}
-        {activeCategory === "rifle" && (
-          <LongGunsList products={products} onAdd={addToCart} />
-        )}
-        {activeCategory === "all" && (
-          <>
-            <ShortGunsList products={products.filter(gun => gun.category === "pistol")} onAdd={addToCart} />
-            <LongGunsList products={products.filter(gun => gun.category === "rifle")} onAdd={addToCart} />
-          </>
-        )}
-      </main>
+    <Box sx={{ width: "100%", minHeight: "100vh", bgcolor: "#f7f7f7", py: 4 }}>
+      <Box sx={{ maxWidth: 1200, mx: "auto", width: "100%" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mb: 2,
+            px: { xs: 1, sm: 2 },
+          }}
+        >
+          <SelectionBar
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+          />
+        </Box>
+        <Paper
+          sx={{
+            mt: 2,
+            mb: 2,
+            px: { xs: 1, sm: 3 },
+            py: 3,
+            width: { xs: "100vw", sm: "80vw" },
+            maxWidth: { xs: "100vw", sm: "80vw" },
+            mx: "auto",
+            boxShadow: 2,
+          }}
+        >
+          <TextField
+            fullWidth
+            placeholder="Filtruj po nazwie/modelu"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            sx={{ mb: 3 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+                lg: "repeat(4, 1fr)",
+              },
+              gap: 3,
+              justifyContent: "center",
+            }}
+          >
+            {displayedProducts.length === 0 ? (
+              <Typography sx={{ gridColumn: "1/-1" }}>
+                Brak broni do wyświetlenia.
+              </Typography>
+            ) : (
+              displayedProducts.map((product) => (
+                <ProductCard
+                  key={product.id || product.model}
+                  image={
+                    product.image?.startsWith("http")
+                      ? product.image
+                      : `/static/${product.image}`
+                  }
+                  model={product.model}
+                  price={product.price}
+                  availability={product.availability}
+                  caliber={product.caliber}
+                  ignition={product.ignition}
+                  isNew={product.new}
+                  description={product.description}
+                  onAdd={() => addToCart(product)}
+                />
+              ))
+            )}
+          </Box>
+        </Paper>
+      </Box>
       {showRegister && <RegisterForm onClose={() => setShowRegister(false)} />}
       {showCart && (
         <Cart
@@ -79,7 +155,7 @@ function HomePage() {
           onRemove={removeFromCart}
         />
       )}
-    </div>
+    </Box>
   );
 }
 

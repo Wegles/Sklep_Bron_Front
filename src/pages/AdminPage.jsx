@@ -11,12 +11,21 @@ import {
   IconButton,
   InputAdornment,
   Collapse,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+
+const CATEGORY_OPTIONS = [
+  { value: "rifle", label: "Karabin" },
+  { value: "pistol", label: "Pistolet" },
+];
 
 const AdminPage = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -27,10 +36,10 @@ const AdminPage = () => {
     availability: false,
     caliber: "",
     ignition: "",
-    is_new: false,
+    isNew: false,
     description: "",
     company: "",
-    category: "",
+    category: "rifle",
     image: "",
   });
 
@@ -47,6 +56,7 @@ const AdminPage = () => {
       setLoading(true);
       try {
         const res = await axiosPrivate.get("/guns");
+        console.log(res.data)
         setGuns(res.data);
       } catch (err) {
         // Możesz dodać obsługę błędów
@@ -97,7 +107,7 @@ const AdminPage = () => {
         availability: false,
         caliber: "",
         ignition: "",
-        is_new: false,
+        isNew: false,
         description: "",
         company: "",
         category: "",
@@ -124,6 +134,12 @@ const AdminPage = () => {
   const filteredGuns = guns.filter((gun) =>
     gun.model?.toLowerCase().includes(filter.toLowerCase())
   );
+
+  // Funkcja do wyświetlania kategorii jako label
+  const getCategoryLabel = (cat) => {
+    const found = CATEGORY_OPTIONS.find((c) => c.value === cat);
+    return found ? found.label : cat;
+  };
 
   return (
     <Box sx={{ maxWidth: 1200, mx: "auto", mt: 4, px: 2 }}>
@@ -194,8 +210,8 @@ const AdminPage = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="is_new"
-                    checked={weaponData.is_new}
+                    name="isNew"
+                    checked={weaponData.isNew}
                     onChange={handleChange}
                   />
                 }
@@ -220,14 +236,22 @@ const AdminPage = () => {
                 onChange={handleChange}
                 sx={{ mb: 2 }}
               />
-              <TextField
-                fullWidth
-                label="Kategoria"
-                name="category"
-                value={weaponData.category}
-                onChange={handleChange}
-                sx={{ mb: 2 }}
-              />
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel id="category-label">Kategoria</InputLabel>
+                <Select
+                  labelId="category-label"
+                  label="Kategoria"
+                  name="category"
+                  value={weaponData.category}
+                  onChange={handleChange}
+                >
+                  {CATEGORY_OPTIONS.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
               <Button variant="outlined" component="label" sx={{ mb: 2 }}>
                 Wybierz zdjęcie
@@ -327,10 +351,10 @@ const AdminPage = () => {
                   Producent: {gun.company}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 1 }}>
-                  Kategoria: {gun.category}
+                  Kategoria: {getCategoryLabel(gun.category)}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 1 }}>
-                  Nowy: {gun.is_new ? "Tak" : "Nie"}
+                  Nowy: {gun.new ? "Tak" : "Nie"}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 1 }}>
                   Opis: {gun.description}
