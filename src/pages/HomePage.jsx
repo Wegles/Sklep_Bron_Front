@@ -81,71 +81,80 @@ function HomePage() {
             setActiveCategory={setActiveCategory}
           />
         </Box>
-        <Paper
+        <Box
           sx={{
-            mt: 2,
-            mb: 2,
-            px: { xs: 1, sm: 3 },
-            py: 3,
-            width: { xs: "100vw", sm: "80vw" },
-            maxWidth: { xs: "100vw", sm: "80vw" },
-            mx: "auto",
-            boxShadow: 2,
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            px: 0,
           }}
         >
-          <TextField
-            fullWidth
-            placeholder="Filtruj po nazwie/modelu"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            sx={{ mb: 3 }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Box
+          <Paper
             sx={{
-              display: "grid",
-              gridTemplateColumns: {
-                xs: "1fr",
-                sm: "repeat(2, 1fr)",
-                md: "repeat(3, 1fr)",
-                lg: "repeat(4, 1fr)",
-              },
-              gap: 3,
-              justifyContent: "center",
+              width: "100%",
+              maxWidth: { xs: "100vw", sm: "80vw" },
+              boxShadow: 2,
+              px: { xs: 0.5, sm: 3 },
+              py: 3,
+              mb: 2,
+              mx: "auto",
             }}
           >
-            {displayedProducts.length === 0 ? (
-              <Typography sx={{ gridColumn: "1/-1" }}>
-                Brak broni do wyświetlenia.
-              </Typography>
-            ) : (
-              displayedProducts.map((product) => (
-                <ProductCard
-                  key={product.id || product.model}
-                  image={
-                    product.image?.startsWith("http")
-                      ? product.image
-                      : `/static/${product.image}`
-                  }
-                  model={product.model}
-                  price={product.price}
-                  availability={product.availability}
-                  caliber={product.caliber}
-                  ignition={product.ignition}
-                  isNew={product.new}
-                  description={product.description}
-                  onAdd={() => addToCart(product)}
-                />
-              ))
-            )}
-          </Box>
-        </Paper>
+            <TextField
+              fullWidth
+              placeholder="Filtruj po nazwie/modelu"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              sx={{ mb: 3 }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: {
+                  xs: "1fr",
+                  sm: "repeat(2, 1fr)",
+                  md: "repeat(3, 1fr)",
+                  lg: "repeat(4, 1fr)",
+                },
+                gap: 3,
+                justifyContent: "center",
+              }}
+            >
+              {displayedProducts.length === 0 ? (
+                <Typography sx={{ gridColumn: "1/-1" }}>
+                  Brak broni do wyświetlenia.
+                </Typography>
+              ) : (
+                displayedProducts.map((product) => (
+                  <ProductCard
+                    key={product.id || product.model}
+                    image={
+                      product.image?.startsWith("http")
+                        ? product.image
+                        : `/static/${product.image}`
+                    }
+                    model={product.model}
+                    price={product.price}
+                    availability={product.availability}
+                    caliber={product.caliber}
+                    ignition={product.ignition}
+                    isNew={product.new}
+                    description={product.description}
+                    onAdd={() => addToCart(product)}
+                  />
+                ))
+              )}
+            </Box>
+          </Paper>
+        </Box>
       </Box>
       {showRegister && <RegisterForm onClose={() => setShowRegister(false)} />}
       {showCart && (
