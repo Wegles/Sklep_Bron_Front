@@ -7,6 +7,7 @@ import Layout from './components/helpers/Layout';
 import HomePage from './pages/HomePage';
 import MissingPage from './pages/MissingPage';
 import UnauthorizedPage from './pages/UnauthorizedPage';
+import AdminPage from './pages/AdminPage';
 
 const App = () => {
   return (
@@ -21,7 +22,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
           </Route>
           <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
-            <Route path="admin" element={<div>Admin Page</div>} />
+            <Route path="admin" element={<AdminPage />} />
           </Route>
       </Route>
       </Route>
