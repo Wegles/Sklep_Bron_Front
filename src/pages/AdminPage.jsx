@@ -51,7 +51,6 @@ const AdminPage = () => {
   const [filter, setFilter] = useState("");
   const [showForm, setShowForm] = useState(false);
 
-  // Fetch all guns
   useEffect(() => {
     const fetchGuns = async () => {
       setLoading(true);
@@ -60,7 +59,6 @@ const AdminPage = () => {
         console.log(res.data)
         setGuns(res.data);
       } catch (err) {
-        // Możesz dodać obsługę błędów
       }
       setLoading(false);
     };
@@ -99,7 +97,6 @@ const AdminPage = () => {
       await axiosPrivate.post("/guns", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      // Po dodaniu broni odśwież listę
       const res = await axiosPrivate.get("/guns");
       setGuns(res.data);
       setWeaponData({
@@ -118,7 +115,6 @@ const AdminPage = () => {
       setImagePreview(null);
       setShowForm(false);
     } catch (err) {
-      // Możesz dodać obsługę błędów
     }
   };
 
@@ -127,16 +123,13 @@ const AdminPage = () => {
       await axiosPrivate.delete(`/guns/${id}`);
       setGuns((prev) => prev.filter((gun) => gun.id !== id));
     } catch (err) {
-      // Możesz dodać obsługę błędów
     }
   };
 
-  // Filtrowanie po nazwie/modelu
   const filteredGuns = guns.filter((gun) =>
     gun.model?.toLowerCase().includes(filter.toLowerCase())
   );
 
-  // Funkcja do wyświetlania kategorii jako label
   const getCategoryLabel = (cat) => {
     const found = CATEGORY_OPTIONS.find((c) => c.value === cat);
     return found ? found.label : cat;

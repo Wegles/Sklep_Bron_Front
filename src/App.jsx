@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import MissingPage from './pages/MissingPage';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import AdminPage from './pages/AdminPage';
+import CartPage from './components/Cart/Cart';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="unauthorized" element={<UnauthorizedPage/>} />
           <Route element={<RequireAuth allowedRoles={['USER', 'ADMIN']} />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="cart" element={<CartPage />} />
           </Route>
           <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
             <Route path="admin" element={<AdminPage />} />

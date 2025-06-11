@@ -3,32 +3,32 @@ import { createTheme } from '@mui/material/styles';
 const Theme = createTheme({
   palette: {
     primary: {
-      main: '#2A3F54', // Navy Blue
-      light: '#B0C4DE', // Light Steel Blue
+      main: '#2A3F54',
+      light: '#B0C4DE', 
       contrastText: '#fff'
     },
     secondary: {
-      main: '#2A9D8F', // Teal
+      main: '#2A9D8F', 
       contrastText: '#fff'
     },
     background: {
-      default: '#F8F9FB', // Ghost White
-      paper: '#FFFFFF' // Surface (Card)
+      default: '#F8F9FB', 
+      paper: '#FFFFFF' 
     },
     text: {
-      primary: '#2F4F4F', // Dark Slate Gray
-      secondary: '#696969' // Dim Gray
+      primary: '#2F4F4F', 
+      secondary: '#696969' 
     },
     success: {
-      main: '#77DD77', // Soft Green
+      main: '#77DD77', 
       contrastText: '#fff'
     },
     warning: {
-      main: '#FFB703', // Amber
+      main: '#FFB703', 
       contrastText: '#fff'
     },
     error: {
-      main: '#E63946', // Soft Red
+      main: '#E63946', 
       contrastText: '#fff'
     }
   },

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useLogout from '../../hooks/useLogout';
-import { BACKEND_URL } from '../../api/axios';
 import {
   AppBar,
   Toolbar,
@@ -27,9 +26,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import Loader from '../messages/Loader';
 
-const Navbar = () => {
+const Navbar = ({ cartItems = [] }) => {
   const { isAuthed, username, auth } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
@@ -44,7 +42,6 @@ const Navbar = () => {
     { to: '/register', label: 'Zarejestruj', icon: <PersonAddIcon /> }
   ];
 
-  // Sprawdź czy użytkownik jest adminem
   const isAdmin = auth?.role === 'ADMIN';
 
   const handleLogout = async () => {
@@ -53,11 +50,8 @@ const Navbar = () => {
     await logout();
   };
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
-
   const handleDrawerToggle = () => setDrawerOpen((prev) => !prev);
 
   const handleProfileClick = () => {
@@ -83,7 +77,6 @@ const Navbar = () => {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar sx={{ justifyContent: 'space-between', px: { xs: 1, sm: 2 } }}>
-          {/* LOGO */}
           <Box
             component={Link}
             to="/"
