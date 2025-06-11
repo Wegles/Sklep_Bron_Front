@@ -1,0 +1,14 @@
+import axios from 'axios';
+
+export const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3300';
+export const BASE_URL = `${BACKEND_URL}/api`
+
+export default axios.create({
+    baseURL: BASE_URL,
+})
+
+export const axiosPrivate = axios.create({
+    baseURL: BASE_URL,
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true
+})

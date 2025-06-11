@@ -1,12 +1,11 @@
-// App.js
 import "./index.css";
 import { useState } from "react";
-import LoginForm from "./components/LoginForm";
-import RegisterForm from "./components/RegisterForm";
-import ProductCard from "./components/ProductCard";
-import Cart from "./components/Cart";
+import LoginForm from "../components/LoginForm";
+import RegisterForm from "../components/RegisterForm";
+import ProductCard from "../components/ProductCard";
+import Cart from "../components/Cart";
 
-function App() {
+function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [activeCategory, setActiveCategory] = useState("short");
@@ -117,52 +116,22 @@ function App() {
   };
 
   return (
-    <div className="p-4">
-      <header className="bg-white shadow p-4 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <img src="/gunshop-logo.png" alt="Logo" className="w-12 h-12" />
-        </div>
-        <div className="flex items-center space-x-4">
-          <input
-            type="text"
-            placeholder="Wpisz czego szukasz..."
-            className="border px-3 py-1 rounded w-96"
-          />
-          <select className="border px-2 py-1 rounded">
-            <option>Wszystkie kategorie</option>
-            <option>Broń krótka</option>
-            <option>Broń długa</option>
-            <option>Amunicja</option>
-          </select>
-        </div>
-        <div className="flex items-center space-x-4">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/9131/9131529.png"
-            alt="Avatar"
-            className="w-8 h-8 rounded-full"
-          />
-          <p className="text-sm text-gray-700 hover:underline cursor-pointer">Profil</p>
-          <button className="text-sm text-blue-600 hover:underline" onClick={() => setShowLogin(true)}>
-            Logowanie
-          </button>
-          <button className="text-sm text-blue-600 hover:underline" onClick={() => setShowRegister(true)}>
-            Rejestracja
-          </button>
-          <button className="text-sm text-blue-600 hover:underline" onClick={() => setShowCart(true)}>
-            Koszyk ({cartItems.reduce((sum, i) => sum + i.quantity, 0)})
-          </button>
-        </div>
-      </header>
-
-      <div className="flex justify-center mt-6 space-x-6">
+    <div style={{ padding: 16 }}>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: 24, gap: 24 }}>
         {Object.entries(categoryLabels).map(([key, label]) => (
           <button
             key={key}
-            className={`px-4 py-2 rounded font-semibold ${
-              activeCategory === key
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
+            style={{
+              padding: "8px 16px",
+              borderRadius: 8,
+              fontWeight: 600,
+              background: activeCategory === key ? "#2563eb" : "#f3f4f6",
+              color: activeCategory === key ? "#fff" : "#374151",
+              border: "none",
+              cursor: "pointer",
+              boxShadow: activeCategory === key ? "0 2px 8px #2563eb33" : "none",
+              transition: "background 0.2s, color 0.2s",
+            }}
             onClick={() => setActiveCategory(key)}
           >
             {label}
@@ -170,11 +139,17 @@ function App() {
         ))}
       </div>
 
-      <main className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4 text-center">
+      <main style={{ marginTop: 32 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 600, marginBottom: 16, textAlign: "center" }}>
           {categoryLabels[activeCategory]}
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: 24,
+          }}
+        >
           {products[activeCategory].map((product, index) => (
             <ProductCard key={index} {...product} onAdd={() => addToCart(product)} />
           ))}
@@ -194,4 +169,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;
