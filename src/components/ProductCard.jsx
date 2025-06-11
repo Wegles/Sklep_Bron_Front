@@ -1,4 +1,3 @@
-// ProductCard.js
 function ProductCard({ image, model, price, availability, caliber, ignition, isNew, description, onAdd }) {
   return (
     <div className="border rounded shadow p-4 flex flex-col">
@@ -32,5 +31,3 @@ function ProductCard({ image, model, price, availability, caliber, ignition, isN
 }
 
 export default ProductCard;
-
-
