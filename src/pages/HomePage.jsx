@@ -7,6 +7,7 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import ProductCard from "../components/ProductCard";
 import { Box, Typography, TextField, InputAdornment, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { BACKEND_URL } from "../api/axios";
 
 function HomePage() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -120,9 +121,7 @@ function HomePage() {
                 display: "grid",
                 gridTemplateColumns: {
                   xs: "1fr",
-                  sm: "repeat(2, 1fr)",
-                  md: "repeat(3, 1fr)",
-                  lg: "repeat(4, 1fr)",
+                  sm: "repeat(auto-fit, minmax(300px, 1fr))",
                 },
                 gap: 3,
                 justifyContent: "center",
@@ -137,9 +136,11 @@ function HomePage() {
                   <ProductCard
                     key={product.id || product.model}
                     image={
-                      product.image?.startsWith("http")
-                        ? product.image
-                        : `/static/${product.image}`
+                      product.imageUrl
+                        ? product.imageUrl.startsWith("http")
+                          ? product.imageUrl
+                          : `${BACKEND_URL}${product.imageUrl}`
+                        : "/static/no-image.png"
                     }
                     model={product.model}
                     price={product.price}

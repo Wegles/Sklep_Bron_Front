@@ -21,6 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { BACKEND_URL } from "../api/axios";
 
 const CATEGORY_OPTIONS = [
   { value: "rifle", label: "Karabin" },
@@ -324,7 +325,7 @@ const AdminPage = () => {
               >
                 <Box sx={{ width: "100%", mb: 1 }}>
                   <img
-                    src={gun.image?.startsWith("http") ? gun.image : `/static/${gun.image}`}
+                    src={`${BACKEND_URL}${gun.imageUrl}`}
                     alt={gun.model}
                     style={{
                       width: "100%",
